@@ -57,6 +57,15 @@
 
     </form>
 
+    <form id="search-form">
+            <p>Search</p>
+            <label for="search">search: </label>
+            <input required type="search" id="search" v-model='search'>
+            <br><br>
+        <button v-on:click='onSubmit'>search</button>
+    
+    </form>
+
 
     <script>
 
@@ -122,6 +131,39 @@
                 }
             }
         })
+
+
+        var searchForm = new Vue({
+            el: '#search-Form',
+            data: {
+                email: '',
+                password: '',
+            },
+
+            methods: {
+                onSubmit: function () {
+                    // check if the email already exists       
+                    var users = '';
+                    var newEmail = this.email;
+                    var newPassword = this.password;
+                    if (localStorage.getItem('users')) { // 'users' is an array of objects            
+                        users = JSON.parse(localStorage.getItem('users'));
+                    };
+                    if (users) {
+                        if (users.some(function (user) { return (user.email === newEmail && user.password === newPassword) })) {
+                            alert('You are logged in!');
+                            return;
+                        }
+                        users.push({ 'email': newEmail, 'password': this.password });
+                        localStorage.setItem('users', JSON.stringify(users));
+                    } else {
+                        users = [{ 'email': newEmail, 'password': this.password }];
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
+                }
+            }
+        })
+
     </script>
 
     <div id="filter">
@@ -150,8 +192,14 @@
         </div>
     </div>
 
+    
+
     <script>
-        var courses = [
+        var filterApp = new Vue({
+            el: '#filter',
+            data: {
+
+            courses = [
             { 'topic': 'math', 'location': 'hendon', 'price': 100 },
             { 'topic': 'math', 'location': 'colindale', 'price': 80 },
             { 'topic': 'math', 'location': 'brent cross', 'price': 90 },
@@ -162,17 +210,13 @@
             { 'topic': 'english', 'location': 'golders green', 'price': 130 },
             { 'topic': 'piano', 'location': 'hendon', 'price': 120 },
             { 'topic': 'piano', 'location': 'golders green', 'price': 140 }
-        ]
-    </script>
-
-    <script>
-        var filterApp = new Vue({
-            el: '#filter',
-            data: {
-                courses: courses,
+        ],
+               // courses: courses,
                 selectedTopic: [],
                 selectedLocation: [],
-                topics: ['math','english']
+                topics: ['math','english','piano'],
+                locations: ['hendon','colindale','brent cross','colindale']
+            
             },
             methods: {
             reset: function() {
@@ -215,6 +259,15 @@
         
     </script>
 
+<form id="search">
+        <p>Search</p>
+        <label for="search">search: </label>
+        <input required type="search" id="search" v-model='search'>
+        <br><br>
+    <button v-on:click='onSubmit'>search</button>
+
+</form>
+
 
 
 
@@ -227,7 +280,7 @@
 
 
 
-    </div>
+</div>
     <style>
         div,
         header,
