@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Week 1</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+</head>
+
+<body>
+
+    <!-- <header>       
+            <img id='logo' src="" alt="logo">      
+            <div id='searchbox' >search box</div>         
+          
+               <form id="signup">    
+                    <div>Sign up</div>
+                    <br><br>    
+                    <label for="email">email: </label>    
+                    <input required type="email" id="email" v-model='email'>    
+                    <br><br>    
+                    <label for="password">password: </label>    
+                    <input required type="password" id="password" v-model='password'>    
+                    <br><br>    
+                    <button v-on:click='onSubmit'>submit</button> 
+                </form> 
+           
+           <br><br>
+           <button>Registration</button>        
+            <button>Shopping basket</button>
+         </header>
+        -->
+    <form id="signup">
+        <h1>Signup</h1>
+        <label for="email">email: </label>
+        <input required type="email" id="email" v-model='email'>
+        <br><br>
+        <label for="password">password: </label>
+        <input required type="password" id="password" v-model='password'>
+        <br><br>
+        <button v-on:click='onSubmit'>submit</button>
+    </form>
+
+    <form id="login-out">
+        <p>Login</p>
+        <label for="email">email: </label>
+        <input required type="email" id="email" v-model='email'>
+        <br><br>
+        <label for="password">password: </label>
+        <input required type="password" id="password" v-model='password'>
+        <br><br>
+        <button v-on:click='onSubmit'>submit</button>
+
+    </form>
+
+
+    <script>
+
+        var signupApp = new Vue({
+            el: '#signup',
+            data: {
+                email: '',
+                password: '',
+            },
+
+            methods: {
+
+                onSubmit: function () {
+                    // check if the email already exists       
+                    var users = '';
+                    var newEmail = this.email;
+                    if (localStorage.getItem('users')) { // 'users' is an array of objects            
+                        users = JSON.parse(localStorage.getItem('users'));
+                    };
+                    if (users) {
+                        if (users.some(function (user) { return user.email === newEmail })) {
+                            alert('Email already exists!');
+                            return;
+                        }
+                        users.push({ 'email': newEmail, 'password': this.password });
+                        localStorage.setItem('users', JSON.stringify(users));
+                    } else {
+                        users = [{ 'email': newEmail, 'password': this.password }];
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
+                }
+            }
+        })
+
+
+        var loginOut = new Vue({
+            el: '#login-out',
+            data: {
+                email: '',
+                password: '',
+            },
+
+            methods: {
+                onSubmit: function () {
+                    // check if the email already exists       
+                    var users = '';
+                    var newEmail = this.email;
+                    var newPassword = this.password;
+                    if (localStorage.getItem('users')) { // 'users' is an array of objects            
+                        users = JSON.parse(localStorage.getItem('users'));
+                    };
+                    if (users) {
+                        if (users.some(function (user) { return (user.email === newEmail && user.password === newPassword) })) {
+                            alert('You are logged in!');
+                            return;
+                        }
+                        users.push({ 'email': newEmail, 'password': this.password });
+                        localStorage.setItem('users', JSON.stringify(users));
+                    } else {
+                        users = [{ 'email': newEmail, 'password': this.password }];
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
+                }
+            }
+        })
+    </script>
+
+    <div id="filter">
+        <h1>Filters</h1>
+        <select multiplev-model='selectedTopic'>
+            <option v-for='topic in topics'>
+                {{topic}}
+            </option>
+        </select>
+        <p> Selectedtopics: {{selectedTopic}}</p>
+        <!--<br>-->
+        <select multiple v-model='selectedLocation'>
+            <option v-for="location in locations">
+                {{location}}
+            </option>
+        </select>
+        <p>Selected location: {{selectedLocation}}</p>
+    </div>
+
+    <button v-on:click='reset'>reset</button>
+
+    <div id="courseList">
+        <h1>Course list</h1>
+        <div v-for="course in filteredCourses" class="course">
+            <li v-for='(value, name) in course'>{{name}}: {{value}}</li>
+        </div>
+    </div>
+
+    <script>
+        var courses = [
+            { 'topic': 'math', 'location': 'hendon', 'price': 100 },
+            { 'topic': 'math', 'location': 'colindale', 'price': 80 },
+            { 'topic': 'math', 'location': 'brent cross', 'price': 90 },
+            { 'topic': 'math', 'location': 'golders green', 'price': 120 },
+            { 'topic': 'english', 'location': 'hendon', 'price': 110 },
+            { 'topic': 'english', 'location': 'colindale', 'price': 90 },
+            { 'topic': 'english', 'location': 'brent cross', 'price': 90 },
+            { 'topic': 'english', 'location': 'golders green', 'price': 130 },
+            { 'topic': 'piano', 'location': 'hendon', 'price': 120 },
+            { 'topic': 'piano', 'location': 'golders green', 'price': 140 }
+        ]
+    </script>
+
+    <script>
+        var filterApp = new Vue({
+            el: '#filter',
+            data: {
+                courses: courses,
+                selectedTopic: [],
+                selectedLocation: [],
+                topics: ['math','english']
+            },
+            methods: {
+            reset: function() {
+                this.selectedTopic = [];
+                this.selectedLocation = [];
+
+            }
+
+        },
+        computed: {
+            filteredCourses: function() {
+                var topics = this.selectedTopic, locations = this.selectedLocation;
+                return this.courses.filter(function (course) {
+                    var topicMatch = false, locationMatch = false;
+                    if (topics.length > 0) {
+                        if (topics.includes(course.topic)) {
+                            topicMatch = true;
+                        }
+                    }
+                    else {
+                        topicMatch = true;
+                    }
+                    if (locations.length > 0) {
+                        if (locations.includes(course.location)) {
+                            locationMatch = true;
+                        }
+                    }
+                    else {
+                        locationMatch = true;
+                    }
+                    return topicMatch && locationMatch
+                })
+
+            }
+        }
+
+            
+        })
+
+        
+    </script>
+
+
+
+
+    <aside>
+        <div>filter</div>
+        <div>filter</div>
+        <div>filter</div>
+    </aside>
+
+
+
+
+    </div>
+    <style>
+        div,
+        header,
+        aside,
+        main {
+            border: solid lightblue;
+            box-sizing: border-box;
+            margin: 1%;
+            padding: 10px;
+        }
+
+        header {
+            width: 95%;
+        }
+
+        #logo {
+            width: 100px;
+        }
+
+        #searchbox {
+            width: 300px;
+        }
+
+        #signup {
+            width: 150px;
+        }
+
+        #logo,
+        #searchbox {
+            height: 50px;
+            display: inline-block;
+        }
+
+        button {
+            height: 50px;
+            margin: 20px;
+            padding: 10px;
+        }
+
+        aside {
+            width: 20%;
+            float: left;
+        }
+
+        main {
+            width: 70%;
+            margin-left: 25%;
+        }
+
+        .filter {
+            width: 80%;
+            min-height: 100px;
+        }
+
+        .product {
+            width: 200px;
+            height: 200px;
+            display: inline-block;
+        }
+
+        .course {
+            border: solid lightblue;
+            width: 150px;
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
+
+
+
+
+
+
+    <input v-model="message" placeholder="edit me">
+    <p>Message is: {{ message }}</p>
+
+
+    <span>Multiline message is:</span>
+    <p style="white-space: pre-line;">{{ message }}</p> <br>
+    <textarea v-model="message" placeholder="add multiple lines"></textarea>
+
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+
+    <div id='example-3'>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br> <span>Checked names: {{ checkedNames }}</span> </div>
+
+    <script>
+        new Vue({
+            el: '#example-3',
+            data: {
+                checkedNames: []
+            }
+        })
+    </script>
+
+    <input type="radio" id="one" value="One" v-model="picked">
+    <label for="one">One</label>
+    <br>
+    <input type="radio" id="two" value="Two" v-model="picked">
+    <label for="two">Two</label>
+    <br>
+    <span>Picked: {{ picked }}</span>
+
+
+    <select v-model="selected">
+        <option disabled value="">Please select one</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+
+
+
+
+
+</body>
+
+</html>
