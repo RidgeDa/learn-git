@@ -42,7 +42,7 @@
         <label for="password">password: </label>
         <input required type="password" id="password" v-model='password'>
         <br><br>
-        <button v-on:click='onSubmit'>submit</button>
+        <button v-on:click='onSubmit'>SignUp</button>
     </form>
 
     <form id="login-out">
@@ -53,21 +53,35 @@
         <label for="password">password: </label>
         <input required type="password" id="password" v-model='password'>
         <br><br>
-        <button v-on:click='onSubmit'>submit</button>
+        <button v-on:click='onSubmit'>Login</button>
 
     </form>
 
-    <form id="search-form">
+    <form id="search-form" >
             <p>Search</p>
-            <label for="search">search: </label>
-            <input required type="search" id="search" v-model='search'>
+            
+            <input required type="text" id="search" v-model='search'>
             <br><br>
-        <button v-on:click='onSubmit'>search</button>
+            <div v-for="course in mathcourses" class="course">
+                    <li v-for='(value, name) in course'>{{name}}: {{value}}</li>
+                </div>
+        
+    </form>
+      
+    
+        
+    
+    <div>
+       
+
+        <li v-for ='(value, property) in course'>
+            {{property}} - {{value}}
+        </li>
     
     </form>
 
-
-    <script>
+    
+<script>
 
         var signupApp = new Vue({
             el: '#signup',
@@ -133,41 +147,64 @@
         })
 
 
-        var searchForm = new Vue({
-            el: '#search-Form',
+    var searchForm = new Vue({
+            el: '#search-form',
             data: {
-                email: '',
-                password: '',
-            },
-
-            methods: {
-                onSubmit: function () {
-                    // check if the email already exists       
-                    var users = '';
-                    var newEmail = this.email;
-                    var newPassword = this.password;
-                    if (localStorage.getItem('users')) { // 'users' is an array of objects            
-                        users = JSON.parse(localStorage.getItem('users'));
-                    };
-                    if (users) {
-                        if (users.some(function (user) { return (user.email === newEmail && user.password === newPassword) })) {
-                            alert('You are logged in!');
-                            return;
-                        }
-                        users.push({ 'email': newEmail, 'password': this.password });
-                        localStorage.setItem('users', JSON.stringify(users));
-                    } else {
-                        users = [{ 'email': newEmail, 'password': this.password }];
-                        localStorage.setItem('users', JSON.stringify(users));
+                search: '',
+                courses: [
+        { 'topic': 'math', 'location': 'hendon', 'price': 100 },
+        { 'topic': 'math', 'location': 'colindale', 'price': 80 },
+        { 'topic': 'math', 'location': 'brent cross', 'price': 90 },    
+        { 'topic': 'math', 'location': 'golders green', 'price': 120 },    
+        { 'topic': 'english', 'location': 'hendon', 'price': 110 },    
+        { 'topic': 'english', 'location': 'colindale', 'price': 90 },    
+        { 'topic': 'english', 'location': 'brent cross', 'price': 90 },    
+        { 'topic': 'english', 'location': 'golders green', 'price': 130 },    
+        { 'topic': 'piano', 'location': 'hendon', 'price': 120 },    
+        { 'topic': 'piano', 'location': 'golders green', 'price': 140 }
+           
+          ]
+        },
+      
+        computed: {
+            mathcourses: function() {
+                
+                 
+                    if (this.search.trim().length===0){
+                        return this.courses;
                     }
+                    else{
+                        return this.courses.filter(function(course){
+                             course.topic.toLowerCase().trim().includes(this.search.trim().toLowerCase())   
+                        })
+                        
+                    }
+
                 }
+            ,
+            
+            hendoncourses: function() {
+      
             }
-        })
+        } 
+
+        /*   computed: {
+    filteredList() {
+      return this.courses.filter(course => {
+        return coures.title.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+    */
+
+    
+  
+})
 
     </script>
 
     <div id="filter">
         <h1>Filters</h1>
+        
         <select multiplev-model='selectedTopic'>
             <option v-for='topic in topics'>
                 {{topic}}
@@ -181,7 +218,7 @@
             </option>
         </select>
         <p>Selected location: {{selectedLocation}}</p>
-    </div>
+    
 
     <button v-on:click='reset'>reset</button>
 
@@ -191,6 +228,7 @@
             <li v-for='(value, name) in course'>{{name}}: {{value}}</li>
         </div>
     </div>
+    </div>
 
     
 
@@ -199,7 +237,7 @@
             el: '#filter',
             data: {
 
-            courses = [
+            courses: [
             { 'topic': 'math', 'location': 'hendon', 'price': 100 },
             { 'topic': 'math', 'location': 'colindale', 'price': 80 },
             { 'topic': 'math', 'location': 'brent cross', 'price': 90 },
@@ -250,23 +288,15 @@
                     return topicMatch && locationMatch
                 })
 
-            }
-        }
-
+            },
             
+        }
         })
 
         
     </script>
 
-<form id="search">
-        <p>Search</p>
-        <label for="search">search: </label>
-        <input required type="search" id="search" v-model='search'>
-        <br><br>
-    <button v-on:click='onSubmit'>search</button>
 
-</form>
 
 
 
