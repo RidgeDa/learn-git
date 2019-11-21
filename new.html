@@ -12,7 +12,7 @@
 </head>
 
 <body>
-
+<div>
     <!-- <header>       
             <img id='logo' src="" alt="logo">      
             <div id='searchbox' >search box</div>         
@@ -34,6 +34,9 @@
             <button>Shopping basket</button>
          </header>
         -->
+        <header>       
+                <img id='logo' src="" alt="logo">      
+                
     <form id="signup">
         <h1>Signup</h1>
         <label for="email">email: </label>
@@ -44,6 +47,10 @@
         <br><br>
         <button v-on:click='onSubmit'>SignUp</button>
     </form>
+    <br><br>
+    <button>Registration</button>        
+     <button>Shopping basket</button>
+  
 
     <form id="login-out">
         <p>Login</p>
@@ -62,7 +69,7 @@
             
             <input required type="text" id="search" v-model='search'>
             <br><br>
-            <div v-for="course in mathcourses" class="course">
+            <div v-for="course in filteredList" class="course">
                     <li v-for='(value, name) in course'>{{name}}: {{value}}</li>
                 </div>
         
@@ -79,6 +86,7 @@
         </li>
     
     </form>
+</header>
 
     
 <script>
@@ -167,7 +175,7 @@
         },
       
         computed: {
-            mathcourses: function() {
+           /* mathcourses*/ filteredList: function() {
                 
                  
                     if (this.search.trim().length===0){
@@ -202,7 +210,7 @@
     <div id="filter">
         <h1>Filters</h1>
         
-        <select multiplev-model='selectedTopic'>
+        <select multiple v-model='selectedTopic'>
             <option v-for='topic in topics'>
                 {{topic}}
             </option>
@@ -250,7 +258,7 @@
                 selectedTopic: [],
                 selectedLocation: [],
                 topics: ['math','english','piano'],
-                locations: ['hendon','colindale','brent cross','colindale']
+                locations: ['hendon','colindale','brent cross','golders green']
             
             },
             methods: {
@@ -274,6 +282,7 @@
                     else {
                         topicMatch = true;
                     }
+                    
                     if (locations.length > 0) {
                         if (locations.includes(course.location)) {
                             locationMatch = true;
@@ -298,16 +307,12 @@
 
 
 
-    <aside>
-        <div>filter</div>
-        <div>filter</div>
-        <div>filter</div>
-    </aside>
+    
 
 
 
 
-</div>
+
     <style>
         div,
         header,
@@ -376,63 +381,9 @@
             padding: 10px;
         }
 
-        
     </style>
 
-
-
-
-
-
-    <input v-model="message" placeholder="edit me">
-    <p>Message is: {{ message }}</p>
-
-
-    <span>Multiline message is:</span>
-    <p style="white-space: pre-line;">{{ message }}</p> <br>
-    <textarea v-model="message" placeholder="add multiple lines"></textarea>
-
-    <input type="checkbox" id="checkbox" v-model="checked">
-    <label for="checkbox">{{ checked }}</label>
-
-    <div id='example-3'>
-        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
-        <label for="jack">Jack</label>
-        <input type="checkbox" id="john" value="John" v-model="checkedNames">
-        <label for="john">John</label>
-        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
-        <label for="mike">Mike</label>
-        <br> <span>Checked names: {{ checkedNames }}</span> </div>
-
-    <script>
-        new Vue({
-            el: '#example-3',
-            data: {
-                checkedNames: []
-            }
-        })
-    </script>
-
-    <input type="radio" id="one" value="One" v-model="picked">
-    <label for="one">One</label>
-    <br>
-    <input type="radio" id="two" value="Two" v-model="picked">
-    <label for="two">Two</label>
-    <br>
-    <span>Picked: {{ picked }}</span>
-
-
-    <select v-model="selected">
-        <option disabled value="">Please select one</option>
-        <option>A</option>
-        <option>B</option>
-        <option>C</option>
-    </select>
-    <span>Selected: {{ selected }}</span>
-
-
-
-
+</div>
 
 </body>
 
