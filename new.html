@@ -36,7 +36,9 @@
         -->
         <header>       
                 <img id='logo' src="" alt="logo"> 
-                <h1>Apply for courses</h1>     
+                <h1>Apply for courses</h1> 
+                
+                   
                 
     <form id="signup">
         <h1>Signup</h1>
@@ -53,13 +55,20 @@
     
   
 
-    <form id="login-out">
+    <form id="login-out" action="studentParents.html">
         <p>Login</p>
         <label for="email">email: </label>
         <input required type="email" id="email" v-model='email'>
         <br><br>
         <label for="password">password: </label>
         <input required type="password" id="password" v-model='password'>
+        <br><br>
+        <label for="role">Role:</label>
+        <select name="role" v-model="currentRole" >
+            <option>student</option>
+            <option>parent</option>
+            <option value="provider">Service Provider</option>
+        </select>
         <br><br>
         <button v-on:click='onSubmit'>Login</button>
         <br><br>
@@ -146,9 +155,11 @@
                     };
                     if (users) {
                         if (users.some(function (user) { return (user.email === newEmail && user.password === newPassword) })) {
-                            alert('You are logged in!');
+                            alert('You are logged in!');     
+        
                             return;
                         }
+                        
                         users.push({ 'email': newEmail, 'password': this.password });
                         localStorage.setItem('users', JSON.stringify(users));
                     } else {
@@ -158,6 +169,11 @@
                 },
 
                 outSubmit: function () {
+
+                    this.removeUser(this.newEmail);
+                    this.newEmail='';
+                    localStorage.removeItem('users');
+                    
 
 
                 }
@@ -185,8 +201,8 @@
           ]
         },
       
-        computed: {
-           /* mathcourses*/ filteredList: function() {
+        /* computed: {
+            filteredList: function() {
                 
                  
                     if (this.search.trim().length===0){
@@ -202,7 +218,15 @@
                 }
             ,
             
-            } 
+            } */ 
+
+            computed: {
+    filteredList() {
+      return this.courses.filter(course => {
+        return course.topic.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  }
 
         /*   computed: {
     filteredList() {
@@ -342,8 +366,6 @@
             height: 50px;
             display: inline-block;
         }
-
-        
 
         button {
             height: 50px;
