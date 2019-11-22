@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<div>
+<div class="grid-container">
     <!-- <header>       
             <img id='logo' src="" alt="logo">      
             <div id='searchbox' >search box</div>         
@@ -35,7 +35,8 @@
          </header>
         -->
         <header>       
-                <img id='logo' src="" alt="logo">      
+                <img id='logo' src="" alt="logo"> 
+                <h1>Apply for courses</h1>     
                 
     <form id="signup">
         <h1>Signup</h1>
@@ -154,8 +155,14 @@
                         users = [{ 'email': newEmail, 'password': this.password }];
                         localStorage.setItem('users', JSON.stringify(users));
                     }
+                },
+
+                outSubmit: function () {
+
+
                 }
-            }
+
+              }
         })
 
 
@@ -307,29 +314,15 @@
     </script>
 
 
-
-
-
-
-    
-
-
-
-
-
-    <style>
-        div,
-        header,
-        aside,
-        main {
-            border: solid lightblue;
-            box-sizing: border-box;
-            margin: 1%;
-            padding: 10px;
-        }
+<style>
 
         header {
             width: 95%;
+        }
+
+        h1 {
+            text-align: center;
+
         }
 
         #logo {
@@ -350,6 +343,8 @@
             display: inline-block;
         }
 
+        
+
         button {
             height: 50px;
             margin: 20px;
@@ -366,9 +361,13 @@
             margin-left: 25%;
         }
 
-        .filter {
-            width: 80%;
-            min-height: 100px;
+        #filter {
+            margin: auto;
+            width: 50%;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 15px;
+            text-align: center;
         }
 
         .product {
@@ -378,14 +377,30 @@
         }
 
         .course {
-            border: solid lightblue;
-            width: 150px;
+            border: solid black;
+            width: 100px;
             display: inline-block;
             margin: 10px;
             padding: 10px;
         }
 
-    </style>
+        form {
+            text-align: center;
+            margin: auto;
+            width: 50%;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 15px;
+
+
+            } 
+
+        body {
+            background-color: rgba(19, 19, 243, 0.932);
+
+        }
+        
+        </style>
 
 </div>
 
