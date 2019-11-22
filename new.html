@@ -48,8 +48,8 @@
         <button v-on:click='onSubmit'>SignUp</button>
     </form>
     <br><br>
-    <button>Registration</button>        
-     <button>Shopping basket</button>
+    
+    
   
 
     <form id="login-out">
@@ -61,8 +61,11 @@
         <input required type="password" id="password" v-model='password'>
         <br><br>
         <button v-on:click='onSubmit'>Login</button>
-
+        <br><br>
+        <button v-on:click='outSubmit'>Logout</button>
     </form>
+
+    
 
     <form id="search-form" >
             <p>Search</p>
@@ -78,12 +81,13 @@
     
         
     
-    <div>
+    <!--<div>
        
 
         <li v-for ='(value, property) in course'>
             {{property}} - {{value}}
         </li>
+    -->
     
     </form>
 </header>
