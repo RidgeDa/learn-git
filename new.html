@@ -155,7 +155,7 @@
                     };
                     if (users) {
                         if (users.some(function (user) { return (user.email === newEmail && user.password === newPassword) })) {
-                            alert('You are logged in!');     
+                            alert('You are logged in!' + newEmail);     
         
                             return;
                         }
